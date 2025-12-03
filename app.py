@@ -4,6 +4,13 @@ from shinywidgets import render_plotly
 import plotly.express as px
 from get_data import devices_data,numeric_cols,manufacturers
 
+from functools import partial
+from shiny.ui import page_navbar
+ui.page_opts(
+    title="Device Sensors", 
+    page_fn=partial(page_navbar, id="page"),  
+)
+
 @reactive.calc
 def filtered_data():
     sub = devices_data[devices_data["manufacturer"] == input.manufacturer()]
