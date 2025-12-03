@@ -3,8 +3,6 @@ from shiny import reactive
 from shinywidgets import render_plotly
 import plotly.express as px
 from get_data import devices_data,numeric_cols,manufacturers
-from functools import partial
-from shiny.ui import page_navbar
 
 @reactive.calc
 def filtered_data():
@@ -13,11 +11,6 @@ def filtered_data():
     if model_text:
         sub = sub[sub["model"].str.contains(model_text, case=False, na=False)]
     return sub
-
-ui.page_opts(
-    title="Device Sensors", 
-    page_fn=partial(page_navbar, id="page"),  
-)
 
 with ui.nav_panel("Filters"):
     with ui.layout_columns():
@@ -30,12 +23,58 @@ with ui.nav_panel("Filters"):
             def boxplot():
                 sub = filtered_data()
                 var = input.variable()
-                if not sub.empty and var in sub:
-                    fig = px.box(
-                        sub,
-                        y=var
-                    ).update_layout(title="Distribution")
-                    return fig
+
+                if sub.empty:
+                    ui.notification_show("No data available.", duration=2)
+                    return
+                if var not in sub.columns:
+                    ui.notification_show(f"Column '{var}' not found in data.", duration=2)
+                    return
+                if sub[var].dropna().empty:
+                    ui.notification_show(f"No valid data for '{var}'.", duration=2)
+                    return
+                
+                fig = px.box(
+                    sub,
+                    y=var
+                ).update_layout(
+                    title=f"Distribution of {var.replace('_', ' ').title()}",
+                )
+                return fig
+        with ui.card(title="Availability", full_screen=False):
+            @render_plotly
+            def pie_chart():
+                sub = filtered_data()
+                var = input.variable()
+                name_col = "_".join(var.split('_')[:-1]+["available"])
+
+                if sub.empty:
+                    ui.notification_show("No data available.", duration=None)
+                    return
+                if name_col not in sub.columns:
+                    ui.notification_show(name_col + " not found in data.", duration=2)
+                    return
+
+                # Count True/False
+                counts = sub[name_col].value_counts().reset_index()
+                counts.columns = [name_col, "count"]
+
+                # Map True/False to colors
+                color_map = {
+                    True: "blue",
+                    False: "red"
+                }
+
+                fig = px.pie(
+                    counts,
+                    names=name_col,
+                    values="count",
+                    color=name_col,
+                    color_discrete_map=color_map,
+                ).update_layout(
+                    title=f"Availability of {" ".join(var.split('_')[:-1]).title()}",
+                )
+                return fig
 
 with ui.nav_panel("Plot"):  
     with ui.card(title="Histogram", full_screen=True):

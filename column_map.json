@@ -39,7 +39,7 @@
     "mrat": "magnetometer_rate",
     "ms": "magnetometer_std",
 
-    "p": "pressure_available",
+    "p": "pressure_sensor_available",
     "pn": "pressure_sensor_name",
     "pv": "pressure_sensor_vendor",
     "pran": "pressure_sensor_range",
@@ -47,7 +47,7 @@
     "prat": "pressure_sensor_rate",
     "ps": "pressure_sensor_std",
 
-    "t": "temperature_available",
+    "t": "temperature_sensor_available",
     "tn": "temperature_sensor_name",
     "tv": "temperature_sensor_vendor",
     "tran": "temperature_sensor_range",
@@ -55,7 +55,7 @@
     "trat": "temperature_sensor_rate",
     "ts": "temperature_sensor_std",
 
-    "h": "humidity_available",
+    "h": "humidity_sensor_available",
     "hn": "humidity_sensor_name",
     "hv": "humidity_sensor_vendor",
     "hran": "humidity_sensor_range",
@@ -63,13 +63,13 @@
     "hrat": "humidity_sensor_rate",
     "hs": "humidity_sensor_std",
 
-    "li": "light_available",
+    "li": "light_sensor_available",
     "lin": "light_sensor_name",
     "liv": "light_sensor_vendor",
     "liran": "light_sensor_range",
     "lires": "light_sensor_resolution",
 
-    "pr": "proximity_available",
+    "pr": "proximity_sensor_available",
     "prn": "proximity_sensor_name",
     "prv": "proximity_sensor_vendor"
 }
