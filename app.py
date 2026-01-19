@@ -65,6 +65,7 @@ with ui.nav_panel("Filters"):
                     True: "blue",
                     False: "red"
                 }
+                tt_txt = " ".join(var.split('_')[:-1]).title()
 
                 fig = px.pie(
                     counts,
@@ -73,7 +74,7 @@ with ui.nav_panel("Filters"):
                     color=name_col,
                     color_discrete_map=color_map,
                 ).update_layout(
-                    title=f"Availability of {" ".join(var.split('_')[:-1]).title()}",
+                    title="Availability of " + tt_txt,
                 )
                 return fig
 
